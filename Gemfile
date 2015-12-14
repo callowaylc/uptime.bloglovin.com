@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'dashing'
+gem 'twitter'
 
-## Remove this if you don't need a twitter widget.
-gem 'twitter', '>= 5.9.0'
+# uptime dependencies ######################
+
+gem 'rspec'
