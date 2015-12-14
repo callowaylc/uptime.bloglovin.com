@@ -12,5 +12,9 @@ require './lib/monitors/uptime'
 SCHEDULER.every '2s' do | job |
   include Uptime
 
-  puts monitors
+  monitors.each do | monitor |
+    monitor.services.each do | service |
+
+    end
+  end
 end

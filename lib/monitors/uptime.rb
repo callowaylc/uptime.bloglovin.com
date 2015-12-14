@@ -5,7 +5,7 @@
 # definition ###############################
 
 module Uptime
-
+  
   # Retrieves list of defined monitors
   def monitors
     @monitors ||= begin
@@ -28,8 +28,10 @@ module Uptime
     File.basename( path, '.rb' ) .sub( /^\w/ ) { | c | c.capitalize }
   end
 
+  # Abstract definition of a monitor; provides interface to concrete
+  # instances
   class Monitor
-
+    attr_reader :services
   end
 
 end
