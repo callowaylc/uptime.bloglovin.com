@@ -13,6 +13,7 @@ SCHEDULER.every '2s' do | job |
   include Uptime
 
   monitors.each do | monitor |
-    monitor.services
+    puts monitor.services[0]
+    exit
   end
 end
