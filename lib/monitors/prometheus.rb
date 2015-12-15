@@ -22,14 +22,12 @@ class Prometheus < Uptime::Monitor
       # and group by job
       # TODO: determine if there is way to perform group by
       # at query level
-      services = { }
+      services = [ ]
       jobs.each do | job |
-        services[name = job['metric']['job']] ||= [ ]
-        services[name] << service_factory( 
-          host: job['metric']['instance'],
-          name: job['metric']['group'],
-          status: job['value'][1] == '1'
-        )
+        host = host_factory job['metrics']['instance']
+        service = service_factory job['metric']['job']
+        
+        service.add_host host, available: job['value'][1] == '1'
       end
     end
   end

@@ -4,7 +4,8 @@
 
 # requires #################################
 
-require './lib/services/service'
+require './lib/resources/service'
+require './lib/resources/host'
 
 # definition ###############################
 
@@ -35,22 +36,33 @@ module Uptime
   # Abstract definition of a monitor; provides interface to concrete
   # instances
   class Monitor
-    attr_reader :services
+    attr_reader :hosts, :services
 
-    def service_factory options={ }
-      service = Service.new
-      service.monitor = self
-      
-      # the passed options must be available as 
-      # accessible attributes of service or an exception
-      # will be thrown here
-      # TODO: this isn't very clear which means there is a 
-      # better solution
+    def initialize
+      @hosts = { }
+      @services = { }
+    end
+
+    def service_factory name, options = { }
+      @services[name] ||= begin
+        resource_factory :service, name, options
+      end
+    end
+
+    def host_factory name, options = { }
+      @hosts[name] ||= begin
+        resource_factory :host, name, options
+      end
+    end
+
+    private def resource_factory resouce, name, options
+      resource = resource.to_s
+      resource = Kernel::const_get resource.sub( /\w/ ) { | c | c.capatalize }
+      resource = resource.new 
+
       options.each do | key, value |
-        service.send( "#{key}=", value )
-      end 
-
-      service
+        resource.send( "#{key}=", value )
+      end       
     end
 
   end
