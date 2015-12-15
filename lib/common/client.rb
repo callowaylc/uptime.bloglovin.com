@@ -5,19 +5,24 @@
 # requires #################################
 
 require 'RestClient'
+require 'json'
 require 'addressable/uri'
 
 # definition ###############################
 
 class Client
-  def initialize gateway:, user:, password:
-
+  def initialize( gateway:, username:, password: )
+    @resource = begin
+      RestClient::Resource.new "https://#{ username }:#{ password }@monitoring.bloglovin.com/api/v1" 
+    end
   end
 
   # Sends GET request to resource with given payload
   def get path, payload = { }
     # convert hash to uriencoded parameters
-    @resource["#{ path }?#{ to_params payload }"].get
+    begin
+      JSON.parse( @resource["#{ path }?#{ to_params payload }"].get )
+    end
   end
 
   private def to_params hash

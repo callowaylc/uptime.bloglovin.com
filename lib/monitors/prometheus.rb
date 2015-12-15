@@ -6,6 +6,7 @@
 require 'RestClient'
 require './lib/monitors/uptime'
 require './lib/common/client'
+require './lib/common/bootstrap'
 
 # definition ###############################
 
@@ -23,20 +24,29 @@ class Prometheus < Uptime::Monitor
       # at query level
       services = { }
       jobs.each do | job |
-        puts job
-        exit
-      end 
+        services[name = job['metric']['job']] ||= [ ]
+        services[name] << service_factory( 
+          host: job['metric']['instance'],
+          name: job['metric']['group'],
+          status: job['value'][1] == '1'
+        )
+      end
     end
   end
 
   private def client
     @client ||= begin
-      Client.new API, ENV['USERNAME'], ENV['PASSWORD']
+      Client.new gateway:  API, 
+                 username: ENV['USERNAME'], 
+                 password: ENV['PASSWORD']
     end
   end
 
   private def jobs
-    everything = client.get "/query?query=up&time=#{ Time.now.getutc }"
+    everything = client.get "/query", {
+      query: 'up',
+      time:  Time.now.getutc.to_i
+    }
     everything['data']['result']
   end
 end

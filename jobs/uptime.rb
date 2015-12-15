@@ -13,8 +13,6 @@ SCHEDULER.every '2s' do | job |
   include Uptime
 
   monitors.each do | monitor |
-    monitor.services.each do | service |
-
-    end
+    monitor.services
   end
 end

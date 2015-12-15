@@ -2,10 +2,14 @@
 # Abstraction of a monitor, or data source for monitor; for
 # example, a monitor could be prometheus, nagios, etc
 
+# requires #################################
+
+require './lib/services/service'
+
 # definition ###############################
 
 module Uptime
-  
+
   # Retrieves list of defined monitors
   def monitors
     @monitors ||= begin
@@ -32,6 +36,23 @@ module Uptime
   # instances
   class Monitor
     attr_reader :services
+
+    def service_factory options={ }
+      service = Service.new
+      service.monitor = self
+      
+      # the passed options must be available as 
+      # accessible attributes of service or an exception
+      # will be thrown here
+      # TODO: this isn't very clear which means there is a 
+      # better solution
+      options.each do | key, value |
+        service.send( "#{key}=", value )
+      end 
+
+      service
+    end
+
   end
 
 end
