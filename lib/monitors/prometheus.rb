@@ -23,7 +23,8 @@ class Prometheus < Uptime::Monitor
       # at query level
       services = { }
       jobs.each do | job |
-
+        puts job
+        exit
       end 
     end
   end

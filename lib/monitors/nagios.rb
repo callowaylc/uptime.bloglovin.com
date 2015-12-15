@@ -8,4 +8,7 @@ require './lib/monitors/uptime'
 # definition ###############################
 
 class Nagios < Uptime::Monitor
+  def services
+    [ ]
+  end
 end

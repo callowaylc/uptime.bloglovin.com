@@ -11,9 +11,7 @@ require 'addressable/uri'
 
 class Client
   def initialize gateway:, user:, password:
-    @resource = begin
-      RestClient::Resource.new gateway, user, password 
-    end
+
   end
 
   # Sends GET request to resource with given payload
