@@ -17,8 +17,9 @@ SCHEDULER.every '2s' do | job |
   monitors.each do | monitor |
     if monitor.kind_of? Prometheus
       monitor.services.each do | service |
-        puts "#{ service.name } is #{ service.available? }"
-
+        send_event "prometheus-service-#{ service.name }", { 
+          value: service.available? 
+        }
       end
     end
   end
