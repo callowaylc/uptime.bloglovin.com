@@ -30,8 +30,7 @@ class Prometheus < Uptime::Monitor
 
         # add host to service as a 'join' and specifiy wether the
         # service is available on said host
-        service.add_host host, available: job['value'][1] == '1'
-
+        service.add_host host, available: job['value'][1].eql?( '1' )
         services << service unless services.include?( service )
       end
 
