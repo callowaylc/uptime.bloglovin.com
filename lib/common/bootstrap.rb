@@ -16,3 +16,7 @@ class String
     self.sub( /^\w/ ) { | character | character.capitalize }
   end
 end
+
+# instantiate logger that will be used as singleton
+# in application
+Logger.new './logs/uptime.log'

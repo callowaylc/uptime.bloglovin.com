@@ -30,7 +30,7 @@ module Uptime
 
   private def class_name path
     # Convert file path to basename and capatalize first character
-    File.basename( path, '.rb' ) .sub( /^\w/ ) { | c | c.capitalize }
+    File.basename( path, '.rb' ).ucfirst
   end
 
   # Abstract definition of a monitor; provides interface to concrete
@@ -56,8 +56,11 @@ module Uptime
     end
 
     private def resource_factory resource, name, options
+      # dynamically determine resource type, instantiate and
+      # bind name value, which acts as primary key
       resource = Kernel::const_get resource.to_s.ucfirst
       resource = resource.new
+      resource.name = name
 
       options.each do | key, value |
         resource.send( "#{key}=", value )

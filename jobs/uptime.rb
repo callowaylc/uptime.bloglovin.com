@@ -5,7 +5,9 @@
 
 # requires #################################
 
+require './lib/common/bootstrap'
 require './lib/monitors/uptime'
+require 'logger'
 
 # scheduler ################################
 
@@ -14,8 +16,9 @@ SCHEDULER.every '2s' do | job |
 
   monitors.each do | monitor |
     if monitor.kind_of? Prometheus
-      puts monitor.services[0].inspect
-      break
+      monitor.services.each do | service |
+        puts service.name
+      end
     end
   end
 end
