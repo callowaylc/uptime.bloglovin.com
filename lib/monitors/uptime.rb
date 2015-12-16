@@ -55,14 +55,15 @@ module Uptime
       end
     end
 
-    private def resource_factory resouce, name, options
-      resource = resource.to_s
-      resource = Kernel::const_get resource.sub( /\w/ ) { | c | c.capatalize }
-      resource = resource.new 
+    private def resource_factory resource, name, options
+      resource = Kernel::const_get resource.to_s.ucfirst
+      resource = resource.new
 
       options.each do | key, value |
         resource.send( "#{key}=", value )
-      end       
+      end
+
+      resource
     end
 
   end

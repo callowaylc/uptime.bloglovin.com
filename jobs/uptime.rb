@@ -13,7 +13,9 @@ SCHEDULER.every '2s' do | job |
   include Uptime
 
   monitors.each do | monitor |
-    puts monitor.services[0]
-    exit
+    if monitor.kind_of? Prometheus
+      puts monitor.services[0].inspect
+      break
+    end
   end
 end

@@ -9,3 +9,10 @@ require 'dotenv'
 
 # bootstrap .env if it exists
 Dotenv.load
+
+# add ucfirst to string instances
+class String
+  def ucfirst
+    self.sub( /^\w/ ) { | character | character.capitalize }
+  end
+end
