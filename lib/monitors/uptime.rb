@@ -55,20 +55,37 @@ module Uptime
       end
     end
 
-    protected def client
+    protected def client headers: { }
       # retrieve rest client facade
       @__client__ ||= begin
         Client.new gateway:  gateway, 
-                   username: ENV['USERNAME'], 
-                   password: ENV['PASSWORD']
+                   username: username, 
+                   password: password,
+                   headers: headers
       end
+    end
+
+    private def ns instance
+      # returns class name capitalized; this value is used
+      # as a namespace for determining the correct env 
+      # variables to use
+      instance.class.to_s.upcase
     end
 
     private def gateway
       # retrieve gateway from env; gateway name is convention
       # GATEWAY_CLASS
-      ENV["GATEWAY_#{ self.class.to_s.upcase }"]
+      ENV["GATEWAY_#{ ns self }"]
     end
+
+    private def username
+      ENV["USERNAME_#{ ns self }"]
+    end
+
+    private def password
+      ENV["PASSWORD_#{ ns self }"]
+    end
+
 
     private def resource_factory resource, name, options
       # dynamically determine resource type, instantiate and

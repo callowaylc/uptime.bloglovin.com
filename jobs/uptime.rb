@@ -11,16 +11,14 @@ require 'logger'
 
 # scheduler ################################
 
-SCHEDULER.every '2s' do | job |
+SCHEDULER.every '10s' do | job |
   include Uptime
 
   monitors.each do | monitor |
-    if %w{ Nagios Prometheus }.include?( monitor.class.to_s )
-      monitor.hosts.each do | resource |
-        send_event id( monitor, resource ), { 
-          value: resource.available? 
-        }
-      end
+    monitor.hosts.each do | resource |
+      send_event id( monitor, resource ), { 
+        value: resource.available? 
+      }
     end
   end
 end

@@ -1,0 +1,21 @@
+<% content_for :title do %>My super sweet dashboard<% end %>
+<div class="gridster">
+  <ul>
+    <% Pingdom.new.hosts.each do | resource | %>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div 
+        data-id="pingdom-host-<%= resource.name %>" 
+        data-view="Text" 
+        data-title="<%= resource.name %>" 
+        data-text="<%= resource.available? %>" 
+        <% if resource.available? %>
+          style="background-color: green"
+        <% else %>
+          style="background-color: red" 
+        <% end %>
+      >
+      </div>
+    </li>
+    <% end %>
+  </ul>
+</div>

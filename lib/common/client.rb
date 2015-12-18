@@ -11,17 +11,19 @@ require 'addressable/uri'
 # definition ###############################
 
 class Client
-  def initialize( gateway:, username:, password: )
+  def initialize( gateway:, username:, password:, headers: )
     @resource = begin
-      RestClient::Resource.new gateway, user: username, password: password
+      RestClient::Resource.new(
+        gateway, user: username, password: password, headers: headers
+      )
     end
   end
 
   # Sends GET request to resource with given payload
-  def get path, payload = { }
+  def get path, headers: { }, query: { }
     # convert hash to uriencoded parameters
     begin
-      JSON.parse( @resource["#{ path }?#{ to_params payload }"].get )
+      JSON.parse( @resource["#{ path }?#{ to_params query }"].get headers )
     end
   end
 

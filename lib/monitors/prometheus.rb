@@ -39,7 +39,7 @@ class Prometheus < Uptime::Monitor
   private def jobs
     # query against prometheus api and retrieve up status against
     # all services
-    everything = client.get "/query", {
+    everything = client.get "/query", query: {
       query: 'up',
       time:  Time.now.getutc.to_i
     }
