@@ -55,6 +55,21 @@ module Uptime
       end
     end
 
+    protected def client
+      # retrieve rest client facade
+      @__client__ ||= begin
+        Client.new gateway:  gateway, 
+                   username: ENV['USERNAME'], 
+                   password: ENV['PASSWORD']
+      end
+    end
+
+    private def gateway
+      # retrieve gateway from env; gateway name is convention
+      # GATEWAY_CLASS
+      ENV["GATEWAY_#{ self.class.upcase }"]
+    end
+    
     private def resource_factory resource, name, options
       # dynamically determine resource type, instantiate and
       # bind name value, which acts as primary key

@@ -15,9 +15,9 @@ SCHEDULER.every '2s' do | job |
   include Uptime
 
   monitors.each do | monitor |
-    if monitor.kind_of? Prometheus
+    if %w{ PROMETHEUS NAGIOS }.include? monitor.class
       monitor.services.each do | service |
-        send_event "prometheus-service-#{ service.name }", { 
+        send_event "#{ monitor.class }-service-#{ service.name }", { 
           value: service.available? 
         }
       end

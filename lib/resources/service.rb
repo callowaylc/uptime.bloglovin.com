@@ -12,7 +12,8 @@ require './lib/resources/resource'
 class Service < Resource
   attr_accessor :monitor, :hosts
 
-  def add_host host, available: 
-    @joins << OpenStruct.new( host: host, available: available )
+  def add_host host, is_available: 
+    add_resource resource: host,
+                 available: is_available
   end
 end

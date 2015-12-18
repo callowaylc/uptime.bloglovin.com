@@ -11,8 +11,6 @@ require './lib/common/bootstrap'
 # definition ###############################
 
 class Prometheus < Uptime::Monitor
-  API = ENV['PROMETHEUS_GATEWAY']
-
   # On demand query against prometheus api for list of 
   # services; results are memoized
   def services
@@ -30,7 +28,7 @@ class Prometheus < Uptime::Monitor
 
         # add host to service as a 'join' and specifiy wether the
         # service is available on said host
-        service.add_host host, available: job['value'][1].eql?( '1' )
+        service.add_host host, is_available: available?( job )
         services << service unless services.include?( service )
       end
 
@@ -38,19 +36,18 @@ class Prometheus < Uptime::Monitor
     end
   end
 
-  private def client
-    @__client__ ||= begin
-      Client.new gateway:  API, 
-                 username: ENV['USERNAME'], 
-                 password: ENV['PASSWORD']
-    end
-  end
-
   private def jobs
+    # query against prometheus api and retrieve up status against
+    # all services
     everything = client.get "/query", {
       query: 'up',
       time:  Time.now.getutc.to_i
     }
     everything['data']['result']
+  end
+
+  private def available? attributes
+    # determine if resource is available/up
+    attributes['value'][1].eql?( '1' )
   end
 end

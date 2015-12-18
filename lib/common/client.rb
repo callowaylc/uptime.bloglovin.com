@@ -13,7 +13,7 @@ require 'addressable/uri'
 class Client
   def initialize( gateway:, username:, password: )
     @resource = begin
-      RestClient::Resource.new "https://#{ username }:#{ password }@monitoring.bloglovin.com/api/v1" 
+      RestClient::Resource.new gateway, user: username, password: password
     end
   end
 
