@@ -11,7 +11,6 @@ class Host < Resource
   attr_accessor :address
 
   def add_service service, is_available:
-    add_resource resource: service,
-                 available: is_available
+    add_join resource: service, available: is_available
   end
 end

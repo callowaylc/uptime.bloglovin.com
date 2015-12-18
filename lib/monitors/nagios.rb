@@ -11,6 +11,7 @@ class Nagios < Uptime::Monitor
   # retrieves hosts against nagios api and associated services
   def hosts
     @__hosts__ ||= begin
+      hosts = [ ]
       everything.each do | host_name, host_attributes | 
         host = host_factory host_name
 
@@ -20,7 +21,11 @@ class Nagios < Uptime::Monitor
           host.add_service service, 
                            is_available: available?( service_attributes )
         end
+
+        hosts << host unless hosts.include?( host )
       end
+
+      hosts
     end
   end
 

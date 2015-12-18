@@ -19,7 +19,7 @@ class Resource
   def available?
     # if joins have been specified, we iterate through
     # join types and check each and everyone is available
-    unless joins.empty? 
+    unless @joins.empty? 
       # iterate through joins and check if all are available
       @joins.each do | join |
         return false unless join.available
@@ -36,8 +36,10 @@ class Resource
   end
 
   protected def add_join resource:, available:
-    @joins << OpenStruct.new resource: resource, 
-                             type: resource.class.downcase
-                             available: available
+    @joins << OpenStruct.new(
+      resource: resource, 
+      type: resource.class.to_s.downcase,
+      available: available
+    )
   end
 end

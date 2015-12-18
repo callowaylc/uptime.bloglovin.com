@@ -67,9 +67,9 @@ module Uptime
     private def gateway
       # retrieve gateway from env; gateway name is convention
       # GATEWAY_CLASS
-      ENV["GATEWAY_#{ self.class.upcase }"]
+      ENV["GATEWAY_#{ self.class.to_s.upcase }"]
     end
-    
+
     private def resource_factory resource, name, options
       # dynamically determine resource type, instantiate and
       # bind name value, which acts as primary key
