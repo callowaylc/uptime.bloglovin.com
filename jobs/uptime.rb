@@ -15,15 +15,18 @@ SCHEDULER.every '2s' do | job |
   include Uptime
 
   monitors.each do | monitor |
-    if %w{ Nagios }.include?( monitor.class.to_s )
-      puts monitor.class
-      monitor.hosts.each do | host |
-        puts "#{ host.name } health is #{ host.available? }"  
-      #monitor.services.each do | service |
-        #send_event "#{ monitor.class }-service-#{ service.name }", { 
-        #  value: service.available? 
-        #}
+    if %w{ Nagios Prometheus }.include?( monitor.class.to_s )
+      monitor.hosts.each do | resource |
+        send_event id( monitor, resource ), { 
+          value: resource.available? 
+        }
       end
     end
   end
+end
+
+private def id monitor, resource
+  monitor.class.to_s.downcase  + "-" +
+  resource.class.to_s.downcase + "-" +
+  resource.name
 end

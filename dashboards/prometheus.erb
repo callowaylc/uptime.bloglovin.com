@@ -1,14 +1,14 @@
 <% content_for :title do %>My super sweet dashboard<% end %>
 <div class="gridster">
   <ul>
-    <% Prometheus.new.services.each do | service | %>
+    <% Prometheus.new.services.each do | resource | %>
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div 
-        data-id="prometheus-service-<%= service.name %>" 
+        data-id="prometheus-service-<%= resource.name %>" 
         data-view="Text" 
-        data-title="<%= service.name %>" 
-        data-text="<%= service.available? %>" 
-        <% if service.available? %>
+        data-title="<%= resource.name %>" 
+        data-text="<%= resource.available? %>" 
+        <% if resource.available? %>
           style="background-color: green"
         <% else %>
           style="background-color: red" 
