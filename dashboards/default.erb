@@ -1,0 +1,79 @@
+<% content_for :title do %>My super sweet dashboard<% end %>
+<script language="javascript" >
+$(function(){ //DOM Ready
+
+    $(".gridster ul").gridster({
+        widget_margins: [10, 10],
+        widget_base_dimensions: [140, 140]
+    });
+
+});
+</script>
+
+<div class="gridster">
+  <p >Pingdom</p>
+  <ul>
+    <% Pingdom.new.hosts.each do | resource | %>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div 
+        data-id="pingdom-host-<%= resource.name %>" 
+        data-view="Text" 
+        data-title="<%= resource.name %>" 
+        data-text="<%= resource.available? %>" 
+        <% if resource.available? %>
+          style="background-color: green; width:50px; height:50px"
+        <% else %>
+          style="background-color: red" 
+        <% end %>
+        onclick="location.href='https://my.pingdom.com/reports/uptime#check=<%= resource.id %>&tab=uptime_tab&daterange=7days'"
+      >
+      </div>
+    </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="gridster" style="margin-top:10px">
+  <p>Prometheus</p>
+  <ul>
+    <% Prometheus.new.services.each do | resource | %>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div 
+        data-id="prometheus-service-<%= resource.name %>" 
+        data-view="Text" 
+        data-title="<%= resource.name %>" 
+        data-text="<%= resource.available? %>" 
+        <% if resource.available? %>
+          style="background-color: green"
+        <% else %>
+          style="background-color: red" 
+        <% end %>
+      >
+      </div>
+    </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="gridster" style="margin-top:50px">
+  <p>Nagios</p>
+  <ul>
+    <% Nagios.new.hosts.each do | resource | %>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div 
+        data-id="nagios-host-<%= resource.name %>" 
+        data-view="Text" 
+        data-title="<%= resource.name %>" 
+        data-text="<%= resource.available? %>" 
+        <% if resource.available? %>
+          style="background-color: green"
+        <% else %>
+          style="background-color: red" 
+        <% end %>
+        onclick="location.href='https://mon1.bloglovin.com/nagios/cgi-bin/extinfo.cgi?type=1&host=<%= resource.name %>'"
+      >
+      </div>
+    </li>
+    <% end %>
+  </ul>
+</div>
