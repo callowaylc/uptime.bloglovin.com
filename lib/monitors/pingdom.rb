@@ -12,7 +12,9 @@ class Pingdom < Uptime::Monitor
     @__hosts__ ||= begin
       hosts = [ ]
       checks.each do | resource |
-        host = host_factory resource['name']
+        host = host_factory resource['name'], {
+          id: resource['id']
+        }
         host.available = resource['status'].eql?( 'up' )
 
         hosts << host unless hosts.include?( host )

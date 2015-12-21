@@ -16,7 +16,6 @@ $(function(){ //DOM Ready
     <% Pingdom.new.hosts.each do | resource | %>
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div 
-
         data-id="pingdom-host-<%= resource.name %>" 
         data-view="Text" 
         data-title="<%= resource.name %>" 
@@ -26,6 +25,7 @@ $(function(){ //DOM Ready
         <% else %>
           style="background-color: red" 
         <% end %>
+        onclick="location.href='https://my.pingdom.com/reports/uptime#check=<%= resource.id %>&tab=uptime_tab&daterange=7days'"
       >
       </div>
     </li>
@@ -55,7 +55,7 @@ $(function(){ //DOM Ready
   </ul>
 </div>
 
-<div class="gridster" style="100px">
+<div class="gridster" style="margin-top:50px">
   <p>Nagios</p>
   <ul>
     <% Nagios.new.hosts.each do | resource | %>
@@ -70,6 +70,7 @@ $(function(){ //DOM Ready
         <% else %>
           style="background-color: red" 
         <% end %>
+        onclick="location.href='https://mon1.bloglovin.com/nagios/cgi-bin/extinfo.cgi?type=1&host=<%= resource.name %>'"
       >
       </div>
     </li>

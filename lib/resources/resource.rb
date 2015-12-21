@@ -7,7 +7,7 @@
 # definition ###############################
 
 class Resource
-  attr_accessor :name
+  attr_accessor :name, :id
   attr_writer   :available
 
   def initialize
