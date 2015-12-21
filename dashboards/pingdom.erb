@@ -1,15 +1,28 @@
 <% content_for :title do %>My super sweet dashboard<% end %>
+<script language="javascript" >
+$(function(){ //DOM Ready
+
+    $(".gridster ul").gridster({
+        widget_margins: [10, 10],
+        widget_base_dimensions: [140, 140]
+    });
+
+});
+</script>
+
 <div class="gridster">
+  <p >Pingdom</p>
   <ul>
     <% Pingdom.new.hosts.each do | resource | %>
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div 
+
         data-id="pingdom-host-<%= resource.name %>" 
         data-view="Text" 
         data-title="<%= resource.name %>" 
         data-text="<%= resource.available? %>" 
         <% if resource.available? %>
-          style="background-color: green"
+          style="background-color: green; width:50px; height:50px"
         <% else %>
           style="background-color: red" 
         <% end %>
